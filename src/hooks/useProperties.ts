@@ -1,102 +1,71 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/integrations/supabase/client';
-import { toast } from 'sonner';
 
 export interface Property {
   id: string;
+  seller_id: string;
   title: string;
-  price: string | number;
+  description: string;
+  price: number;
   address: string;
   city: string;
   state: string;
   zip_code: string;
-  property_type: string;
+  property_type: 'house' | 'apartment' | 'condo' | 'land' | 'commercial';
   bedrooms: number;
-  bathrooms: string | number;
-  area: string | number;
-  description: string;
+  bathrooms: number;
+  area: number;
   images: string[];
   featured: boolean;
-  seller_id: string;
-  status: string;
+  status: 'available' | 'pending' | 'sold';
   created_at: string;
-  updated_at: string;
-  profiles?: {
+  seller?: {
     name: string;
     email: string;
     phone?: string;
-  } | null;
+  };
 }
 
-export const useProperties = (filters?: {
-  city?: string;
-  propertyType?: string;
-  minPrice?: number;
-  maxPrice?: number;
-}) => {
+export const useProperties = () => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchProperties();
-  }, [filters]);
-
   const fetchProperties = async () => {
     setLoading(true);
-    try {
-      let query = supabase
-        .from('properties')
-        .select('*')
-        .eq('status', 'available');
+    const { data, error } = await supabase
+      .from('properties')
+      .select(`
+        *,
+        profiles!properties_seller_id_fkey (
+          name,
+          email,
+          phone
+        )
+      `)
+      .eq('status', 'available')
+      .order('created_at', { ascending: false });
 
-      if (filters?.city) {
-        query = query.ilike('city', `%${filters.city}%`);
-      }
-      if (filters?.propertyType && filters.propertyType !== 'all') {
-        query = query.eq('property_type', filters.propertyType);
-      }
-      if (filters?.minPrice) {
-        query = query.gte('price', filters.minPrice);
-      }
-      if (filters?.maxPrice) {
-        query = query.lte('price', filters.maxPrice);
-      }
-
-      const { data, error } = await query.order('created_at', { ascending: false });
-
-      if (error) throw error;
-      
-      // Fetch seller profiles separately
-      if (data && data.length > 0) {
-        const sellerIds = [...new Set(data.map(p => p.seller_id))];
-        const { data: profiles, error: profilesError } = await supabase
-          .from('profiles')
-          .select('id, name, email, phone')
-          .in('id', sellerIds);
-        
-        if (!profilesError && profiles) {
-          const propertiesWithProfiles = data.map(property => {
-            const profile = profiles.find(p => p.id === property.seller_id);
-            return {
-              ...property,
-              profiles: profile || null
-            };
-          });
-          setProperties(propertiesWithProfiles as any);
-        } else {
-          setProperties(data as any);
-        }
-      } else {
-        setProperties([]);
-      }
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
-      setLoading(false);
+    if (!error && data) {
+      const formattedProperties: Property[] = data.map((prop: any) => ({
+        ...prop,
+        property_type: prop.property_type as Property['property_type'],
+        status: prop.status as Property['status'],
+        seller: Array.isArray(prop.profiles) ? prop.profiles[0] : prop.profiles,
+      }));
+      setProperties(formattedProperties);
     }
+    setLoading(false);
   };
 
-  return { properties, loading, refetch: fetchProperties };
+  useEffect(() => {
+    fetchProperties();
+  }, []);
+
+  return {
+    properties,
+    loading,
+    refetch: fetchProperties,
+  };
 };
 
 export const useProperty = (id: string) => {
@@ -104,72 +73,72 @@ export const useProperty = (id: string) => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchProperty();
-  }, [id]);
-
-  const fetchProperty = async () => {
-    setLoading(true);
-    try {
+    const fetchProperty = async () => {
+      if (!id) return;
+      
+      setLoading(true);
       const { data, error } = await supabase
         .from('properties')
-        .select('*')
+        .select(`
+          *,
+          profiles!properties_seller_id_fkey (
+            name,
+            email,
+            phone
+          )
+        `)
         .eq('id', id)
         .single();
 
-      if (error) throw error;
-      
-      // Fetch seller profile separately
-      if (data) {
-        const { data: profile } = await supabase
-          .from('profiles')
-          .select('id, name, email, phone')
-          .eq('id', data.seller_id)
-          .single();
-        
+      if (!error && data) {
         setProperty({
           ...data,
-          profiles: profile || null
-        } as any);
+          property_type: data.property_type as Property['property_type'],
+          status: data.status as Property['status'],
+          seller: Array.isArray(data.profiles) ? data.profiles[0] : data.profiles,
+        });
       }
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
       setLoading(false);
-    }
-  };
+    };
 
-  return { property, loading, refetch: fetchProperty };
+    fetchProperty();
+  }, [id]);
+
+  return { property, loading };
 };
 
-export const useUserProperties = (userId: string | undefined) => {
+export const useUserProperties = (userId?: string) => {
   const [properties, setProperties] = useState<Property[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    if (userId) {
-      fetchUserProperties();
-    }
-  }, [userId]);
-
   const fetchUserProperties = async () => {
-    if (!userId) return;
-    
-    setLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from('properties')
-        .select('*')
-        .eq('seller_id', userId)
-        .order('created_at', { ascending: false });
-
-      if (error) throw error;
-      setProperties(data || []);
-    } catch (error: any) {
-      toast.error(error.message);
-    } finally {
+    if (!userId) {
+      setProperties([]);
       setLoading(false);
+      return;
     }
+
+    setLoading(true);
+    const { data, error } = await supabase
+      .from('properties')
+      .select('*')
+      .eq('seller_id', userId)
+      .order('created_at', { ascending: false });
+
+    if (!error && data) {
+      const formattedProperties: Property[] = data.map((prop: any) => ({
+        ...prop,
+        property_type: prop.property_type as Property['property_type'],
+        status: prop.status as Property['status'],
+      }));
+      setProperties(formattedProperties);
+    }
+    setLoading(false);
   };
+
+  useEffect(() => {
+    fetchUserProperties();
+  }, [userId]);
 
   return { properties, loading, refetch: fetchUserProperties };
 };

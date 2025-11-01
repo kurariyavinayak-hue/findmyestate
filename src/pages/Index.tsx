@@ -5,11 +5,12 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import PropertyCard from '@/components/property/PropertyCard';
-import { dummyProperties } from '@/data/properties';
+import { PropertyCard } from '@/components/property/PropertyCard';
+import { useProperties } from '@/hooks/useProperties';
 
 const Index = () => {
-  const featuredProperties = dummyProperties.filter(p => p.featured).slice(0, 3);
+  const { properties } = useProperties();
+  const featuredProperties = properties.filter(p => p.featured).slice(0, 3);
 
   return (
     <div className="min-h-screen flex flex-col">

@@ -17,9 +17,9 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
     <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300">
       <Link to={`/properties/${property.id}`}>
         <div className="relative aspect-[4/3] overflow-hidden">
-          <img
-            src={property.images[0]}
-            alt={property.title}
+            <img
+              src={mappedProperty.images[0]}
+              alt={mappedProperty.title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           {property.featured && (

@@ -27,26 +27,23 @@ const Auth = () => {
     e.preventDefault();
     setIsLoading(true);
 
-    try {
-      if (isLogin) {
-        await login(formData.email, formData.password);
-        toast.success('Welcome back!');
-        navigate('/dashboard');
-      } else {
-        if (formData.password !== formData.confirmPassword) {
-          toast.error('Passwords do not match');
-          setIsLoading(false);
-          return;
-        }
-        await signup(formData.name, formData.email, formData.password);
-        toast.success('Account created successfully!');
-        navigate('/dashboard');
-      }
-    } catch (error) {
-      toast.error('Something went wrong. Please try again.');
-    } finally {
+    if (!isLogin && formData.password !== formData.confirmPassword) {
+      toast.error('Passwords do not match');
       setIsLoading(false);
+      return;
     }
+
+    const result = isLogin 
+      ? await login(formData.email, formData.password)
+      : await signup(formData.name, formData.email, formData.password);
+
+    if (result.error) {
+      toast.error(result.error.message || 'Authentication failed');
+    } else {
+      toast.success(isLogin ? 'Welcome back!' : 'Account created!');
+      navigate('/dashboard');
+    }
+    setIsLoading(false);
   };
 
   return (

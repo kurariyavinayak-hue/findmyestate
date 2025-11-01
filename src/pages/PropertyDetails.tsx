@@ -6,11 +6,23 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from '@/components/ui/carousel';
-import { dummyProperties } from '@/data/properties';
+import { useProperty } from '@/hooks/useProperties';
 
 const PropertyDetails = () => {
   const { id } = useParams();
-  const property = dummyProperties.find((p) => p.id === id);
+  const { property, loading } = useProperty(id || '');
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        <Header />
+        <div className="flex-1 flex items-center justify-center">
+          <p className="text-muted-foreground">Loading...</p>
+        </div>
+        <Footer />
+      </div>
+    );
+  }
 
   if (!property) {
     return (
@@ -78,17 +90,16 @@ const PropertyDetails = () => {
                         <div className="flex items-center gap-2 text-muted-foreground">
                           <MapPin className="h-5 w-5" />
                           <span>
-                            {property.location.address}, {property.location.city}, {property.location.state}{' '}
-                            {property.location.zipCode}
+                            {property.address}, {property.city}, {property.state} {property.zip_code}
                           </span>
                         </div>
                       </div>
                       <div className="text-right">
                         <div className="text-3xl font-bold text-primary">
-                          ${property.price.toLocaleString()}
+                          ${Number(property.price).toLocaleString()}
                         </div>
                         <Badge variant="outline" className="mt-2 capitalize">
-                          {property.type}
+                          {property.property_type}
                         </Badge>
                       </div>
                     </div>
@@ -106,12 +117,12 @@ const PropertyDetails = () => {
                       </div>
                       <div className="text-center">
                         <Maximize className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
-                        <div className="font-semibold">{property.area.toLocaleString()}</div>
+                        <div className="font-semibold">{Number(property.area).toLocaleString()}</div>
                         <div className="text-sm text-muted-foreground">Sqft</div>
                       </div>
                       <div className="text-center">
                         <Calendar className="h-6 w-6 mx-auto mb-2 text-muted-foreground" />
-                        <div className="font-semibold">{new Date(property.listedDate).toLocaleDateString()}</div>
+                        <div className="font-semibold">{new Date(property.created_at).toLocaleDateString()}</div>
                         <div className="text-sm text-muted-foreground">Listed</div>
                       </div>
                     </div>
@@ -137,26 +148,31 @@ const PropertyDetails = () => {
                           <User className="h-6 w-6 text-primary" />
                         </div>
                         <div>
-                          <div className="font-medium">{property.sellerName}</div>
+                          <div className="font-medium">{property.seller?.name || 'Unknown'}</div>
                           <div className="text-sm text-muted-foreground">Property Owner</div>
                         </div>
                       </div>
 
-                      <div className="space-y-3 pt-4 border-t">
-                        <a
-                          href={`tel:${property.sellerPhone}`}
-                          className="flex items-center gap-3 text-sm hover:text-primary transition-colors"
-                        >
-                          <Phone className="h-4 w-4" />
-                          <span>{property.sellerPhone}</span>
-                        </a>
-                        <a
-                          href={`mailto:${property.sellerEmail}`}
-                          className="flex items-center gap-3 text-sm hover:text-primary transition-colors"
-                        >
-                          <Mail className="h-4 w-4" />
-                          <span>{property.sellerEmail}</span>
-                        </a>
+                      {property.seller && (
+                        <div className="space-y-3 pt-4 border-t">
+                          {property.seller.phone && (
+                            <a
+                              href={`tel:${property.seller.phone}`}
+                              className="flex items-center gap-3 text-sm hover:text-primary transition-colors"
+                            >
+                              <Phone className="h-4 w-4" />
+                              <span>{property.seller.phone}</span>
+                            </a>
+                          )}
+                          <a
+                            href={`mailto:${property.seller.email}`}
+                            className="flex items-center gap-3 text-sm hover:text-primary transition-colors"
+                          >
+                            <Mail className="h-4 w-4" />
+                            <span>{property.seller.email}</span>
+                          </a>
+                        </div>
+                      )}
                       </div>
                     </div>
                   </div>
