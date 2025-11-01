@@ -12,6 +12,16 @@ const PropertyDetails = () => {
   const { id } = useParams();
   const { property, loading } = useProperty(id || '');
 
+  const formatIndianPrice = (price: number) => {
+    if (price >= 10000000) {
+      return `₹${(price / 10000000).toFixed(2)} Cr`;
+    } else if (price >= 100000) {
+      return `₹${(price / 100000).toFixed(2)} Lac`;
+    } else {
+      return `₹${price.toLocaleString('en-IN')}`;
+    }
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -96,7 +106,7 @@ const PropertyDetails = () => {
                       </div>
                       <div className="text-right">
                         <div className="text-3xl font-bold text-primary">
-                          ${Number(property.price).toLocaleString()}
+                          {formatIndianPrice(Number(property.price))}
                         </div>
                         <Badge variant="outline" className="mt-2 capitalize">
                           {property.property_type}

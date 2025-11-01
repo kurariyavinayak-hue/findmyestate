@@ -13,6 +13,16 @@ interface PropertyCardProps {
 const PropertyCard = ({ property }: PropertyCardProps) => {
   const [isFavorited, setIsFavorited] = useState(false);
 
+  const formatIndianPrice = (price: number) => {
+    if (price >= 10000000) {
+      return `₹${(price / 10000000).toFixed(2)} Cr`;
+    } else if (price >= 100000) {
+      return `₹${(price / 100000).toFixed(2)} Lac`;
+    } else {
+      return `₹${price.toLocaleString('en-IN')}`;
+    }
+  };
+
   return (
     <Card className="group overflow-hidden hover:shadow-xl transition-all duration-300">
       <Link to={`/properties/${property.id}`}>
@@ -49,7 +59,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
                 {property.title}
               </h3>
               <span className="font-bold text-xl text-primary whitespace-nowrap">
-                ${property.price.toLocaleString()}
+                {formatIndianPrice(property.price)}
               </span>
             </div>
 
