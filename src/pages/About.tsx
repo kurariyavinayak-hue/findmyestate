@@ -133,7 +133,7 @@ const About = () => {
                 <Card className="text-center hover:shadow-lg transition-shadow">
                   <CardContent className="pt-8 pb-8">
                     <Avatar className="w-32 h-32 mx-auto mb-4">
-                      <AvatarImage src={aniketImage} alt="Aniket Agrawal" />
+                      <AvatarImage src={aniketImage} alt="Aniket Agrawal" className="object-cover" />
                       <AvatarFallback>AA</AvatarFallback>
                     </Avatar>
                     <h3 className="text-xl font-semibold mb-1">Aniket Agrawal</h3>
@@ -145,7 +145,7 @@ const About = () => {
                 <Card className="text-center hover:shadow-lg transition-shadow">
                   <CardContent className="pt-8 pb-8">
                     <Avatar className="w-32 h-32 mx-auto mb-4">
-                      <AvatarImage src={parasImage} alt="Paras Mani Paterya" />
+                      <AvatarImage src={amitImage} alt="Paras Mani Paterya" className="object-cover" />
                       <AvatarFallback>PP</AvatarFallback>
                     </Avatar>
                     <h3 className="text-xl font-semibold mb-1">Paras Mani Paterya</h3>
@@ -157,7 +157,7 @@ const About = () => {
                 <Card className="text-center hover:shadow-lg transition-shadow">
                   <CardContent className="pt-8 pb-8">
                     <Avatar className="w-32 h-32 mx-auto mb-4">
-                      <AvatarImage src={amitImage} alt="Amit Kumar Shivhare" />
+                      <AvatarImage src={parasImage} alt="Amit Kumar Shivhare" className="object-cover" />
                       <AvatarFallback>AS</AvatarFallback>
                     </Avatar>
                     <h3 className="text-xl font-semibold mb-1">Amit Kumar Shivhare</h3>
