@@ -34,23 +34,25 @@ export const useProperties = () => {
     setLoading(true);
     const { data, error } = await supabase
       .from('properties')
-      .select(`
-        *,
-        profiles!properties_seller_id_fkey (
-          name,
-          email,
-          phone
-        )
-      `)
+      .select('*')
       .eq('status', 'available')
       .order('created_at', { ascending: false });
 
     if (!error && data) {
+      // Fetch seller profiles separately
+      const sellerIds = [...new Set(data.map(p => p.seller_id))];
+      const { data: profiles } = await supabase
+        .from('profiles')
+        .select('id, name, email, phone')
+        .in('id', sellerIds);
+
+      const profilesMap = new Map(profiles?.map(p => [p.id, p]) || []);
+
       const formattedProperties: Property[] = data.map((prop: any) => ({
         ...prop,
         property_type: prop.property_type as Property['property_type'],
         status: prop.status as Property['status'],
-        seller: Array.isArray(prop.profiles) ? prop.profiles[0] : prop.profiles,
+        seller: profilesMap.get(prop.seller_id),
       }));
       setProperties(formattedProperties);
     }
@@ -79,23 +81,23 @@ export const useProperty = (id: string) => {
       setLoading(true);
       const { data, error } = await supabase
         .from('properties')
-        .select(`
-          *,
-          profiles!properties_seller_id_fkey (
-            name,
-            email,
-            phone
-          )
-        `)
+        .select('*')
         .eq('id', id)
-        .single();
+        .maybeSingle();
 
       if (!error && data) {
+        // Fetch seller profile separately
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('name, email, phone')
+          .eq('id', data.seller_id)
+          .single();
+
         setProperty({
           ...data,
           property_type: data.property_type as Property['property_type'],
           status: data.status as Property['status'],
-          seller: Array.isArray(data.profiles) ? data.profiles[0] : data.profiles,
+          seller: profile || undefined,
         });
       }
       setLoading(false);
