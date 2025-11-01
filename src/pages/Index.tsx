@@ -31,18 +31,18 @@ const Index = () => {
             {/* Badge */}
             <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary/20 border border-secondary/30 backdrop-blur-sm animate-fade-in-down shadow-coral">
               <Sparkles className="h-4 w-4 text-secondary animate-pulse" />
-              <span className="text-sm font-semibold text-secondary">Where Dreams Meet Reality</span>
+              <span className="text-sm font-semibold text-foreground">Where Dreams Meet Reality</span>
             </div>
             
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-bold leading-tight animate-fade-in-up">
-              <span className="bg-gradient-to-r from-primary-foreground via-secondary to-accent bg-clip-text text-transparent">
+              <span className="text-foreground">
                 Your Perfect Home
               </span>
               <br />
-              <span className="text-secondary">Awaits Discovery</span>
+              <span className="text-primary">Awaits Discovery</span>
             </h1>
             
-            <p className="text-xl md:text-2xl text-primary-foreground/90 max-w-3xl mx-auto leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+            <p className="text-xl md:text-2xl text-foreground/80 max-w-3xl mx-auto leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
               Explore handpicked luxury properties in prime locations. 
               <br className="hidden md:block" />
               Your journey to the perfect estate starts here.
@@ -80,15 +80,15 @@ const Index = () => {
             <div className="grid grid-cols-3 gap-8 pt-16 max-w-3xl mx-auto animate-fade-in-up" style={{ animationDelay: '0.4s' }}>
               <div className="group cursor-pointer">
                 <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform">1000+</div>
-                <div className="text-sm text-primary-foreground/80">Premium Properties</div>
+                <div className="text-sm text-foreground/75">Premium Properties</div>
               </div>
               <div className="group cursor-pointer">
                 <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform">5000+</div>
-                <div className="text-sm text-primary-foreground/80">Happy Clients</div>
+                <div className="text-sm text-foreground/75">Happy Clients</div>
               </div>
               <div className="group cursor-pointer">
                 <div className="text-4xl md:text-5xl font-bold bg-gradient-to-r from-secondary to-accent bg-clip-text text-transparent mb-2 group-hover:scale-110 transition-transform">50+</div>
-                <div className="text-sm text-primary-foreground/80">Prime Cities</div>
+                <div className="text-sm text-foreground/75">Prime Cities</div>
               </div>
             </div>
           </div>
