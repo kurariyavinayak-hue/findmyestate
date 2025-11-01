@@ -26,7 +26,7 @@ const PropertyFilters = ({ onSearch, onTypeChange, onPriceRangeChange }: Propert
             <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
             <Input
               id="search"
-              placeholder="City, State, or Zip Code"
+              placeholder="City, State, or PIN Code (e.g., Mumbai, Maharashtra)"
               className="pl-10"
               onChange={(e) => onSearch(e.target.value)}
             />
@@ -41,10 +41,12 @@ const PropertyFilters = ({ onSearch, onTypeChange, onPriceRangeChange }: Propert
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">All Types</SelectItem>
-              <SelectItem value="house">House</SelectItem>
               <SelectItem value="apartment">Apartment</SelectItem>
-              <SelectItem value="condo">Condo</SelectItem>
-              <SelectItem value="land">Land</SelectItem>
+              <SelectItem value="villa">Villa</SelectItem>
+              <SelectItem value="independent house">Independent House</SelectItem>
+              <SelectItem value="builder floor">Builder Floor</SelectItem>
+              <SelectItem value="penthouse">Penthouse</SelectItem>
+              <SelectItem value="plot">Plot</SelectItem>
               <SelectItem value="commercial">Commercial</SelectItem>
             </SelectContent>
           </Select>
@@ -58,10 +60,11 @@ const PropertyFilters = ({ onSearch, onTypeChange, onPriceRangeChange }: Propert
             </SelectTrigger>
             <SelectContent>
               <SelectItem value="all">Any Price</SelectItem>
-              <SelectItem value="0-300000">Under $300K</SelectItem>
-              <SelectItem value="300000-600000">$300K - $600K</SelectItem>
-              <SelectItem value="600000-1000000">$600K - $1M</SelectItem>
-              <SelectItem value="1000000-99999999">Over $1M</SelectItem>
+              <SelectItem value="0-5000000">Under ₹50 Lac</SelectItem>
+              <SelectItem value="5000000-10000000">₹50 Lac - ₹1 Cr</SelectItem>
+              <SelectItem value="10000000-25000000">₹1 Cr - ₹2.5 Cr</SelectItem>
+              <SelectItem value="25000000-50000000">₹2.5 Cr - ₹5 Cr</SelectItem>
+              <SelectItem value="50000000-999999999">Over ₹5 Cr</SelectItem>
             </SelectContent>
           </Select>
         </div>
