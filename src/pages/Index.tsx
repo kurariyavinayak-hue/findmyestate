@@ -1,11 +1,11 @@
 import { Link } from 'react-router-dom';
-import { Search, Home, Users, TrendingUp, ArrowRight } from 'lucide-react';
+import { Home, Users, TrendingUp, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import PropertyCard from '@/components/property/PropertyCard';
+import SearchBar from '@/components/search/SearchBar';
 import { useProperties } from '@/hooks/useProperties';
 
 const Index = () => {
@@ -29,18 +29,10 @@ const Index = () => {
             </p>
             
             <div className="bg-background/95 backdrop-blur-sm p-4 rounded-lg shadow-xl max-w-2xl mx-auto">
-              <div className="flex gap-2">
-                <div className="relative flex-1">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-                  <Input
-                    placeholder="Enter city, neighborhood, or ZIP code"
-                    className="pl-10 h-12 text-base"
-                  />
-                </div>
-                <Button size="lg" className="h-12 px-8">
-                  Search
-                </Button>
-              </div>
+              <SearchBar 
+                size="lg"
+                inputClassName="text-base"
+              />
             </div>
 
             <div className="flex flex-wrap justify-center gap-4 pt-4">
