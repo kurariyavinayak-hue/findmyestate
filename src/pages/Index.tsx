@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent } from '@/components/ui/card';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
-import { PropertyCard } from '@/components/property/PropertyCard';
+import PropertyCard from '@/components/property/PropertyCard';
 import { useProperties } from '@/hooks/useProperties';
 
 const Index = () => {

@@ -175,7 +175,6 @@ const PropertyDetails = () => {
                       )}
                       </div>
                     </div>
-                  </div>
 
                   <div className="space-y-3 pt-4 border-t">
                     <Button className="w-full" size="lg">

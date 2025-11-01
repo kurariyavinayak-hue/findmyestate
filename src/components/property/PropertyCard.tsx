@@ -3,7 +3,7 @@ import { MapPin, Bed, Bath, Maximize, Heart } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Property } from '@/data/properties';
+import { Property } from '@/hooks/useProperties';
 import { useState } from 'react';
 
 interface PropertyCardProps {
@@ -18,8 +18,8 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
       <Link to={`/properties/${property.id}`}>
         <div className="relative aspect-[4/3] overflow-hidden">
             <img
-              src={mappedProperty.images[0]}
-              alt={mappedProperty.title}
+              src={property.images[0]}
+              alt={property.title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
           {property.featured && (
@@ -56,7 +56,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
               <MapPin className="h-4 w-4 flex-shrink-0" />
               <span className="line-clamp-1">
-                {property.location.city}, {property.location.state}
+                {property.city}, {property.state}
               </span>
             </div>
 
