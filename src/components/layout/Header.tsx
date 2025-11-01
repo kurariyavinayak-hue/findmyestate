@@ -1,6 +1,7 @@
 import { Link, useNavigate } from 'react-router-dom';
 import { Home, LogIn, UserPlus, User, LogOut, PlusCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -42,6 +43,7 @@ const Header = () => {
         </nav>
 
         <div className="flex items-center gap-3">
+          <ThemeToggle />
           {isAuthenticated ? (
             <>
               <Button asChild variant="default" size="sm" className="hidden sm:flex">
