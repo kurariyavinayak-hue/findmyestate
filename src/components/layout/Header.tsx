@@ -11,7 +11,7 @@ import {
 import { useAuth } from '@/context/AuthContext';
 
 const Header = () => {
-  const { user, isAuthenticated, logout } = useAuth();
+  const { user, profile, isAuthenticated, logout } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -55,7 +55,7 @@ const Header = () => {
                 <DropdownMenuTrigger asChild>
                   <Button variant="outline" size="sm">
                     <User className="mr-2 h-4 w-4" />
-                    {user?.name}
+                    {profile?.name || 'User'}
                   </Button>
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="end" className="w-56">

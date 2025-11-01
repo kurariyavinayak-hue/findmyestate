@@ -46,14 +46,7 @@ export const useProperties = (filters?: {
     try {
       let query = supabase
         .from('properties')
-        .select(`
-          *,
-          profiles (
-            name,
-            email,
-            phone
-          )
-        `)
+        .select('*')
         .eq('status', 'available');
 
       if (filters?.city) {
@@ -72,7 +65,30 @@ export const useProperties = (filters?: {
       const { data, error } = await query.order('created_at', { ascending: false });
 
       if (error) throw error;
-      setProperties(data || []);
+      
+      // Fetch seller profiles separately
+      if (data && data.length > 0) {
+        const sellerIds = [...new Set(data.map(p => p.seller_id))];
+        const { data: profiles, error: profilesError } = await supabase
+          .from('profiles')
+          .select('id, name, email, phone')
+          .in('id', sellerIds);
+        
+        if (!profilesError && profiles) {
+          const propertiesWithProfiles = data.map(property => {
+            const profile = profiles.find(p => p.id === property.seller_id);
+            return {
+              ...property,
+              profiles: profile || null
+            };
+          });
+          setProperties(propertiesWithProfiles as any);
+        } else {
+          setProperties(data as any);
+        }
+      } else {
+        setProperties([]);
+      }
     } catch (error: any) {
       toast.error(error.message);
     } finally {
@@ -96,19 +112,25 @@ export const useProperty = (id: string) => {
     try {
       const { data, error } = await supabase
         .from('properties')
-        .select(`
-          *,
-          profiles (
-            name,
-            email,
-            phone
-          )
-        `)
+        .select('*')
         .eq('id', id)
         .single();
 
       if (error) throw error;
-      setProperty(data);
+      
+      // Fetch seller profile separately
+      if (data) {
+        const { data: profile } = await supabase
+          .from('profiles')
+          .select('id, name, email, phone')
+          .eq('id', data.seller_id)
+          .single();
+        
+        setProperty({
+          ...data,
+          profiles: profile || null
+        } as any);
+      }
     } catch (error: any) {
       toast.error(error.message);
     } finally {
