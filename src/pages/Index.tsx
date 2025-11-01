@@ -331,19 +331,19 @@ const Index = () => {
         
         <div className="container relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-secondary/30 border border-secondary/40 backdrop-blur-sm mb-8 animate-fade-in-down shadow-coral">
-            <Sparkles className="h-4 w-4 text-secondary animate-pulse" />
-            <span className="text-sm font-semibold text-secondary">Start Your Journey</span>
+            <Sparkles className="h-4 w-4 text-foreground dark:text-foreground animate-pulse" />
+            <span className="text-sm font-semibold text-foreground dark:text-foreground">Start Your Journey</span>
           </div>
           
           <h2 className="text-5xl md:text-7xl font-bold mb-8 animate-fade-in-up">
-            <span className="bg-gradient-to-r from-primary-foreground via-secondary to-primary-foreground bg-clip-text text-transparent">
+            <span className="text-foreground dark:text-foreground">
               Ready to Find Your
             </span>
             <br />
-            <span className="text-secondary">Dream Estate?</span>
+            <span className="text-primary dark:text-primary">Dream Estate?</span>
           </h2>
           
-          <p className="text-xl md:text-2xl mb-12 text-primary-foreground/90 max-w-3xl mx-auto leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
+          <p className="text-xl md:text-2xl mb-12 text-foreground/80 dark:text-foreground/85 max-w-3xl mx-auto leading-relaxed animate-fade-in-up" style={{ animationDelay: '0.1s' }}>
             Join thousands of satisfied clients who found their perfect property with us
           </p>
           
@@ -355,7 +355,7 @@ const Index = () => {
                 <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-2 transition-transform" />
               </Link>
             </Button>
-            <Button asChild size="lg" variant="outline" className="bg-primary-foreground/10 border-2 border-primary-foreground/40 hover:bg-primary-foreground/20 backdrop-blur-sm h-16 px-10 text-lg">
+            <Button asChild size="lg" variant="outline" className="bg-background/80 dark:bg-background/60 border-2 border-primary/30 hover:bg-background/90 dark:hover:bg-background/70 backdrop-blur-sm h-16 px-10 text-lg text-foreground dark:text-foreground">
               <Link to="/contact">
                 <Mail className="mr-2 h-5 w-5" />
                 Contact Us
