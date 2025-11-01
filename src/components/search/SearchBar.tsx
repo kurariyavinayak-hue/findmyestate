@@ -103,8 +103,8 @@ const SearchBar = ({ className = '', inputClassName = '', size = 'default' }: Se
           {suggestions.map((suggestion, index) => (
             <button
               key={index}
-              className={`w-full text-left px-4 py-2 hover:bg-accent transition-colors ${
-                index === selectedIndex ? 'bg-accent' : ''
+              className={`w-full text-left px-4 py-2 text-foreground hover:bg-accent hover:text-accent-foreground transition-colors ${
+                index === selectedIndex ? 'bg-accent text-accent-foreground' : ''
               }`}
               onClick={() => handleSuggestionClick(suggestion)}
               onMouseEnter={() => setSelectedIndex(index)}
