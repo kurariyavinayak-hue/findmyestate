@@ -145,8 +145,8 @@ const Index = () => {
                   <div className={`w-24 h-24 mx-auto mb-8 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg`}>
                     <feature.icon className="h-12 w-12 text-primary group-hover:text-secondary transition-colors" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors">{feature.title}</h3>
-                  <p className="text-muted-foreground leading-relaxed text-base">
+                  <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors text-foreground dark:text-foreground">{feature.title}</h3>
+                  <p className="text-muted-foreground dark:text-muted-foreground leading-relaxed text-base">
                     {feature.description}
                   </p>
                 </CardContent>
@@ -206,9 +206,9 @@ const Index = () => {
                         <step.icon className="h-16 w-16 text-primary" />
                       </div>
                     </div>
-                    <div className="text-6xl font-bold text-primary/10 mb-4">{step.step}</div>
-                    <h3 className="text-2xl font-bold mb-4">{step.title}</h3>
-                    <p className="text-muted-foreground leading-relaxed">{step.description}</p>
+                    <div className="text-6xl font-bold text-primary/10 dark:text-primary/20 mb-4">{step.step}</div>
+                    <h3 className="text-2xl font-bold mb-4 text-foreground dark:text-foreground">{step.title}</h3>
+                    <p className="text-muted-foreground dark:text-muted-foreground leading-relaxed">{step.description}</p>
                   </div>
                 </div>
               ))}
@@ -309,12 +309,12 @@ const Index = () => {
                       <Star key={i} className="h-5 w-5 text-secondary fill-secondary" />
                     ))}
                   </div>
-                  <p className="text-muted-foreground mb-6 leading-relaxed text-base italic">
+                  <p className="text-muted-foreground dark:text-muted-foreground mb-6 leading-relaxed text-base italic">
                     "{testimonial.content}"
                   </p>
                   <div>
-                    <div className="font-bold text-lg">{testimonial.name}</div>
-                    <div className="text-sm text-muted-foreground">{testimonial.role}</div>
+                    <div className="font-bold text-lg text-foreground dark:text-foreground">{testimonial.name}</div>
+                    <div className="text-sm text-muted-foreground dark:text-muted-foreground">{testimonial.role}</div>
                   </div>
                 </CardContent>
               </Card>
