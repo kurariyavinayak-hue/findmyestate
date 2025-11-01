@@ -145,7 +145,7 @@ const Index = () => {
                   <div className={`w-24 h-24 mx-auto mb-8 rounded-2xl bg-gradient-to-br ${feature.gradient} flex items-center justify-center group-hover:scale-110 group-hover:rotate-6 transition-all duration-300 shadow-lg`}>
                     <feature.icon className="h-12 w-12 text-primary group-hover:text-secondary transition-colors" />
                   </div>
-                  <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors text-foreground dark:text-foreground">{feature.title}</h3>
+                  <h3 className="text-2xl font-bold mb-4 group-hover:text-primary transition-colors text-foreground dark:text-foreground opacity-100">{feature.title}</h3>
                   <p className="text-muted-foreground dark:text-muted-foreground leading-relaxed text-base">
                     {feature.description}
                   </p>
