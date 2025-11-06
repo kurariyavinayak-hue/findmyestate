@@ -58,6 +58,7 @@ export type Database = {
           seller_id: string
           state: string
           status: string
+          tax_receipt_url: string | null
           title: string
           updated_at: string
           zip_code: string
@@ -78,6 +79,7 @@ export type Database = {
           seller_id: string
           state: string
           status?: string
+          tax_receipt_url?: string | null
           title: string
           updated_at?: string
           zip_code: string
@@ -98,6 +100,7 @@ export type Database = {
           seller_id?: string
           state?: string
           status?: string
+          tax_receipt_url?: string | null
           title?: string
           updated_at?: string
           zip_code?: string

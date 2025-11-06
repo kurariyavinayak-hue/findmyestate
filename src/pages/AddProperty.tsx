@@ -19,7 +19,10 @@ const AddProperty = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [taxReceiptFile, setTaxReceiptFile] = useState<File | null>(null);
+  const [taxReceiptPreview, setTaxReceiptPreview] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const taxReceiptInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -85,6 +88,71 @@ const AddProperty = () => {
     setImagePreviews(prev => prev.filter((_, i) => i !== index));
   };
 
+  const handleTaxReceiptSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    
+    if (!file) return;
+
+    // Validate file type and size
+    const isValidType = file.type.startsWith('image/') || file.type === 'application/pdf';
+    const isValidSize = file.size <= 10 * 1024 * 1024; // 10MB
+
+    if (!isValidType) {
+      toast.error('Tax receipt must be an image or PDF file');
+      return;
+    }
+    if (!isValidSize) {
+      toast.error('File exceeds 10MB size limit');
+      return;
+    }
+
+    setTaxReceiptFile(file);
+
+    // Create preview for images only
+    if (file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setTaxReceiptPreview(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    } else {
+      setTaxReceiptPreview('');
+    }
+
+    toast.success('Tax receipt selected');
+  };
+
+  const removeTaxReceipt = () => {
+    setTaxReceiptFile(null);
+    setTaxReceiptPreview('');
+    if (taxReceiptInputRef.current) {
+      taxReceiptInputRef.current.value = '';
+    }
+  };
+
+  const uploadTaxReceipt = async (): Promise<string | null> => {
+    if (!taxReceiptFile) return null;
+
+    const fileExt = taxReceiptFile.name.split('.').pop();
+    const fileName = `${user?.id}/tax-receipts/${Date.now()}-${Math.random().toString(36).substring(7)}.${fileExt}`;
+
+    const { data, error } = await supabase.storage
+      .from('property-images')
+      .upload(fileName, taxReceiptFile);
+
+    if (error) {
+      console.error('Tax receipt upload error:', error);
+      throw error;
+    }
+
+    // Get public URL
+    const { data: { publicUrl } } = supabase.storage
+      .from('property-images')
+      .getPublicUrl(fileName);
+
+    return publicUrl;
+  };
+
   const uploadImages = async (): Promise<string[]> => {
     if (imageFiles.length === 0) return [];
 
@@ -121,6 +189,9 @@ const AddProperty = () => {
     try {
       // Upload images first
       const imageUrls = await uploadImages();
+      
+      // Upload tax receipt
+      const taxReceiptUrl = await uploadTaxReceipt();
 
       // Insert property into database
       const { error } = await supabase
@@ -139,6 +210,7 @@ const AddProperty = () => {
           zip_code: formData.zipCode,
           description: formData.description,
           images: imageUrls,
+          tax_receipt_url: taxReceiptUrl,
           status: 'available',
         });
 
@@ -373,6 +445,64 @@ const AddProperty = () => {
                           </button>
                         </div>
                       ))}
+                    </div>
+                  )}
+                </div>
+
+                {/* Tax Receipt Upload */}
+                <div className="space-y-4">
+                  <h3 className="text-lg font-semibold">Tax Receipt (Optional)</h3>
+                  <p className="text-sm text-muted-foreground">Upload a recent tax receipt for land verification purposes</p>
+                  
+                  <input
+                    ref={taxReceiptInputRef}
+                    type="file"
+                    accept="image/*,application/pdf"
+                    onChange={handleTaxReceiptSelect}
+                    className="hidden"
+                  />
+                  
+                  <div 
+                    onClick={() => taxReceiptInputRef.current?.click()}
+                    className="border-2 border-dashed rounded-lg p-8 text-center hover:border-primary transition-colors cursor-pointer"
+                  >
+                    <Upload className="h-10 w-10 mx-auto mb-3 text-muted-foreground" />
+                    <p className="text-sm font-medium mb-1">Click to upload tax receipt</p>
+                    <p className="text-xs text-muted-foreground">
+                      PNG, JPG or PDF up to 10MB
+                    </p>
+                  </div>
+
+                  {/* Tax Receipt Preview */}
+                  {taxReceiptFile && (
+                    <div className="relative">
+                      {taxReceiptPreview ? (
+                        <div className="relative group">
+                          <img
+                            src={taxReceiptPreview}
+                            alt="Tax receipt preview"
+                            className="w-full max-w-sm h-48 object-cover rounded-lg mx-auto"
+                          />
+                          <button
+                            type="button"
+                            onClick={removeTaxReceipt}
+                            className="absolute top-2 right-2 bg-destructive text-destructive-foreground rounded-full p-2 opacity-0 group-hover:opacity-100 transition-opacity"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
+                      ) : (
+                        <div className="flex items-center justify-between p-4 bg-muted rounded-lg max-w-sm mx-auto">
+                          <span className="text-sm font-medium">{taxReceiptFile.name}</span>
+                          <button
+                            type="button"
+                            onClick={removeTaxReceipt}
+                            className="bg-destructive text-destructive-foreground rounded-full p-1"
+                          >
+                            <X className="h-4 w-4" />
+                          </button>
+                        </div>
+                      )}
                     </div>
                   )}
                 </div>
