@@ -184,6 +184,13 @@ const AddProperty = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Validate tax receipt is uploaded
+    if (!taxReceiptFile) {
+      toast.error('Please upload a tax receipt to proceed');
+      return;
+    }
+    
     setIsLoading(true);
 
     try {
@@ -451,7 +458,7 @@ const AddProperty = () => {
 
                 {/* Tax Receipt Upload */}
                 <div className="space-y-4">
-                  <h3 className="text-lg font-semibold">Tax Receipt (Optional)</h3>
+                  <h3 className="text-lg font-semibold">Tax Receipt *</h3>
                   <p className="text-sm text-muted-foreground">Upload a recent tax receipt for land verification purposes</p>
                   
                   <input
