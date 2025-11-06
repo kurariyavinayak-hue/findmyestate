@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { PlusCircle, Edit, Trash2, Eye } from 'lucide-react';
+import { PlusCircle, Edit, Trash2, Eye, TrendingUp } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -134,6 +134,10 @@ const Dashboard = () => {
                         <Button variant="outline" size="sm">
                           <Edit className="mr-2 h-4 w-4" />
                           Edit
+                        </Button>
+                        <Button variant="outline" size="sm">
+                          <TrendingUp className="mr-2 h-4 w-4" />
+                          Promote
                         </Button>
                         <Button
                           variant="destructive"
