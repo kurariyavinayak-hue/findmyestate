@@ -142,7 +142,7 @@ const Dashboard = () => {
                             View
                           </Link>
                         </Button>
-                        <Button variant="outline" size="sm">
+                        <Button asChild variant="outline" size="sm">
                           <Link to={`/edit-property/${property.id}`}>
                             <Edit className="mr-2 h-4 w-4" />
                             Edit
