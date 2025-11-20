@@ -29,13 +29,31 @@ const Properties = () => {
     // Search filter (location)
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
-      filtered = filtered.filter(
-        (p) =>
-          p.city.toLowerCase().includes(searchLower) ||
-          p.state.toLowerCase().includes(searchLower) ||
-          p.zip_code.includes(filters.search) ||
-          p.address.toLowerCase().includes(searchLower)
-      );
+      // Split search by common separators to handle formatted suggestions like "Indore, Madhya Pradesh"
+      const searchTerms = searchLower.split(/[,\-]/).map(term => term.trim()).filter(term => term.length > 0);
+      
+      filtered = filtered.filter((p) => {
+        const city = p.city.toLowerCase();
+        const state = p.state.toLowerCase();
+        const zipCode = p.zip_code.toLowerCase();
+        const address = p.address.toLowerCase();
+        
+        // Check if the whole search matches any field
+        const directMatch = city.includes(searchLower) ||
+                           state.includes(searchLower) ||
+                           zipCode.includes(searchLower) ||
+                           address.includes(searchLower);
+        
+        // Check if any search term matches any field
+        const termMatch = searchTerms.some(term => 
+          city.includes(term) ||
+          state.includes(term) ||
+          zipCode.includes(term) ||
+          address.includes(term)
+        );
+        
+        return directMatch || termMatch;
+      });
     }
 
     // Type filter
