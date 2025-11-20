@@ -248,7 +248,7 @@ const AdminDashboard = () => {
                         </div>
                       </TableCell>
                       <TableCell>{property.city}, {property.state}</TableCell>
-                      <TableCell>${property.price.toLocaleString()}</TableCell>
+                      <TableCell>₹{property.price.toLocaleString('en-IN')}</TableCell>
                       <TableCell>
                         <Badge variant={property.status === 'available' ? 'default' : 'secondary'}>
                           {property.status}

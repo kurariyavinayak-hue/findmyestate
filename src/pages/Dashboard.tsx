@@ -117,7 +117,7 @@ const Dashboard = () => {
                         </div>
                         <div className="text-right">
                           <p className="text-2xl font-bold text-primary">
-                            ${Number(property.price).toLocaleString()}
+                            ₹{Number(property.price).toLocaleString('en-IN')}
                           </p>
                         </div>
                       </div>
