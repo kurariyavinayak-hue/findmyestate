@@ -78,6 +78,15 @@ const PropertyDetails = () => {
                             alt={`${property.title} - Image ${index + 1}`}
                             className="w-full h-full object-cover"
                           />
+                          {property.status === 'pending' && (
+                            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center">
+                              <div className="text-center">
+                                <div className="text-4xl font-bold text-primary rotate-[-15deg] border-4 border-primary px-8 py-4 rounded-lg">
+                                  UNDER REVIEW
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </div>
                       </CarouselItem>
                     ))}

@@ -32,6 +32,15 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
               alt={property.title}
             className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
           />
+          {property.status === 'pending' && (
+            <div className="absolute inset-0 bg-background/80 backdrop-blur-sm flex items-center justify-center">
+              <div className="text-center">
+                <div className="text-2xl font-bold text-primary rotate-[-15deg] border-4 border-primary px-6 py-3 rounded-lg">
+                  UNDER REVIEW
+                </div>
+              </div>
+            </div>
+          )}
           {property.featured && (
             <Badge className="absolute top-4 left-4 bg-secondary">
               Featured
