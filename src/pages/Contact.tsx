@@ -69,8 +69,8 @@ const Contact = () => {
                     </div>
                     <div>
                       <h3 className="font-semibold mb-1">Phone</h3>
-                      <p className="text-sm text-muted-foreground">(555) 123-4567</p>
-                      <p className="text-sm text-muted-foreground">Mon-Fri 9am-6pm EST</p>
+                      <p className="text-sm text-muted-foreground">+91 9009975543</p>
+                      <p className="text-sm text-muted-foreground">Mon-Fri 9am-6pm IST</p>
                     </div>
                   </div>
                 </CardContent>
@@ -85,8 +85,8 @@ const Contact = () => {
                     <div>
                       <h3 className="font-semibold mb-1">Office</h3>
                       <p className="text-sm text-muted-foreground">
-                        123 Real Estate Ave<br />
-                        New York, NY 10001
+                        B Boys Hostel, IET-DAVV<br />
+                        Indore
                       </p>
                     </div>
                   </div>
