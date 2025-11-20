@@ -107,7 +107,10 @@ const Dashboard = () => {
                           <div className="flex items-center gap-2 mb-2">
                             <h3 className="text-xl font-semibold">{property.title}</h3>
                             {property.featured && <Badge>Featured</Badge>}
-                            <Badge variant="outline" className="capitalize">
+                            <Badge 
+                              variant={property.status === 'rejected' ? 'destructive' : 'outline'} 
+                              className="capitalize"
+                            >
                               {property.status}
                             </Badge>
                           </div>
@@ -121,6 +124,14 @@ const Dashboard = () => {
                           </p>
                         </div>
                       </div>
+
+                      {property.status === 'rejected' && (
+                        <div className="mb-4 p-3 bg-destructive/10 border border-destructive/20 rounded-lg">
+                          <p className="text-sm text-destructive font-medium">
+                            ⚠️ This property cannot be listed. Please check the uploaded documents and try again.
+                          </p>
+                        </div>
+                      )}
 
                       <p className="text-muted-foreground mb-4 line-clamp-2">{property.description}</p>
 

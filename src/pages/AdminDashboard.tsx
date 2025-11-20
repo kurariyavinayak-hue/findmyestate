@@ -250,7 +250,11 @@ const AdminDashboard = () => {
                       <TableCell>{property.city}, {property.state}</TableCell>
                       <TableCell>₹{property.price.toLocaleString('en-IN')}</TableCell>
                       <TableCell>
-                        <Badge variant={property.status === 'available' ? 'default' : 'secondary'}>
+                        <Badge variant={
+                          property.status === 'available' ? 'default' : 
+                          property.status === 'rejected' ? 'destructive' : 
+                          'secondary'
+                        }>
                           {property.status}
                         </Badge>
                       </TableCell>
@@ -270,15 +274,25 @@ const AdminDashboard = () => {
                       </TableCell>
                       <TableCell>
                         <div className="flex gap-2">
-                          {property.status !== 'available' && (
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => updatePropertyStatus(property.id, 'available')}
-                            >
-                              <CheckCircle className="h-4 w-4 mr-1" />
-                              Approve
-                            </Button>
+                          {property.status === 'pending' && (
+                            <>
+                              <Button
+                                variant="outline"
+                                size="sm"
+                                onClick={() => updatePropertyStatus(property.id, 'available')}
+                              >
+                                <CheckCircle className="h-4 w-4 mr-1" />
+                                Approve
+                              </Button>
+                              <Button
+                                variant="destructive"
+                                size="sm"
+                                onClick={() => updatePropertyStatus(property.id, 'rejected')}
+                              >
+                                <XCircle className="h-4 w-4 mr-1" />
+                                Reject
+                              </Button>
+                            </>
                           )}
                           {property.status === 'available' && (
                             <Button
@@ -288,6 +302,16 @@ const AdminDashboard = () => {
                             >
                               <XCircle className="h-4 w-4 mr-1" />
                               Suspend
+                            </Button>
+                          )}
+                          {property.status === 'rejected' && (
+                            <Button
+                              variant="outline"
+                              size="sm"
+                              onClick={() => updatePropertyStatus(property.id, 'pending')}
+                            >
+                              <CheckCircle className="h-4 w-4 mr-1" />
+                              Review Again
                             </Button>
                           )}
                         </div>

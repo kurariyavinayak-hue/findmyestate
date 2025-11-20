@@ -17,7 +17,7 @@ export interface Property {
   area: number;
   images: string[];
   featured: boolean;
-  status: 'available' | 'pending' | 'sold';
+  status: 'available' | 'pending' | 'sold' | 'rejected';
   created_at: string;
   seller?: {
     name: string;
