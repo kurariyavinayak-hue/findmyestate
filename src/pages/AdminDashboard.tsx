@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Building2, User, FileText, CheckCircle, XCircle, Eye } from 'lucide-react';
+import { Building2, User, FileText, CheckCircle, XCircle, Eye, Star } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -28,6 +28,7 @@ interface Property {
   tax_receipt_url: string | null;
   created_at: string;
   seller_id: string;
+  featured: boolean;
 }
 
 interface Profile {
@@ -156,6 +157,23 @@ const AdminDashboard = () => {
     }
   };
 
+  const toggleFeaturedStatus = async (propertyId: string, currentFeatured: boolean) => {
+    try {
+      const { error } = await supabase
+        .from('properties')
+        .update({ featured: !currentFeatured })
+        .eq('id', propertyId);
+
+      if (error) throw error;
+
+      toast.success(`Property ${!currentFeatured ? 'marked as featured' : 'removed from featured'}`);
+      loadDashboardData();
+    } catch (error) {
+      console.error('Error updating featured status:', error);
+      toast.error('Failed to update featured status');
+    }
+  };
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex flex-col">
@@ -233,6 +251,7 @@ const AdminDashboard = () => {
                     <TableHead>Location</TableHead>
                     <TableHead>Price</TableHead>
                     <TableHead>Status</TableHead>
+                    <TableHead>Featured</TableHead>
                     <TableHead>Tax Receipt</TableHead>
                     <TableHead>Actions</TableHead>
                   </TableRow>
@@ -264,6 +283,22 @@ const AdminDashboard = () => {
                         }>
                           {property.status}
                         </Badge>
+                      </TableCell>
+                      <TableCell>
+                        {property.status === 'available' ? (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => toggleFeaturedStatus(property.id, property.featured)}
+                            className="hover:bg-accent"
+                          >
+                            <Star 
+                              className={`h-5 w-5 ${property.featured ? 'fill-yellow-500 text-yellow-500' : 'text-muted-foreground'}`} 
+                            />
+                          </Button>
+                        ) : (
+                          <span className="text-sm text-muted-foreground">-</span>
+                        )}
                       </TableCell>
                       <TableCell>
                         {property.tax_receipt_url ? (
