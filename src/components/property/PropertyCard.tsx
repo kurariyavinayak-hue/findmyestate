@@ -4,14 +4,15 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Property } from '@/hooks/useProperties';
-import { useState } from 'react';
+import { useFavorites } from '@/hooks/useFavorites';
 
 interface PropertyCardProps {
   property: Property;
 }
 
 const PropertyCard = ({ property }: PropertyCardProps) => {
-  const [isFavorited, setIsFavorited] = useState(false);
+  const { isFavorite, toggleFavorite } = useFavorites();
+  const isFavorited = isFavorite(property.id);
 
   const formatIndianPrice = (price: number) => {
     if (price >= 10000000) {
@@ -52,7 +53,7 @@ const PropertyCard = ({ property }: PropertyCardProps) => {
             className="absolute top-4 right-4 bg-background/80 backdrop-blur-sm hover:bg-background"
             onClick={(e) => {
               e.preventDefault();
-              setIsFavorited(!isFavorited);
+              toggleFavorite(property.id);
             }}
           >
             <Heart className={`h-4 w-4 ${isFavorited ? 'fill-destructive text-destructive' : ''}`} />
