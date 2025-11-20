@@ -240,7 +240,14 @@ const AdminDashboard = () => {
                 <TableBody>
                   {properties.map((property) => (
                     <TableRow key={property.id}>
-                      <TableCell className="font-medium">{property.title}</TableCell>
+                      <TableCell className="font-medium">
+                        <button
+                          onClick={() => navigate(`/property/${property.id}`)}
+                          className="text-primary hover:underline cursor-pointer text-left"
+                        >
+                          {property.title}
+                        </button>
+                      </TableCell>
                       <TableCell>
                         <div className="flex flex-col">
                           <span className="text-sm">{property.seller?.name || 'Unknown'}</span>
