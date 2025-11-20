@@ -218,7 +218,6 @@ const AddProperty = () => {
           description: formData.description,
           images: imageUrls,
           tax_receipt_url: taxReceiptUrl,
-          status: 'available',
         });
 
       if (error) throw error;
