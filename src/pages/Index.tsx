@@ -280,19 +280,19 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-6xl mx-auto">
             {[
               {
-                name: "Sarah Johnson",
+                name: "Satpal",
                 role: "Homeowner",
                 content: "FindMyEstate made finding my dream home effortless. The platform is intuitive and the properties are truly premium quality.",
                 rating: 5
               },
               {
-                name: "Michael Chen",
+                name: "Tirpal",
                 role: "Property Investor",
                 content: "As an investor, I've found incredible opportunities here. The verification process gives me complete confidence in every listing.",
                 rating: 5
               },
               {
-                name: "Emily Rodriguez",
+                name: "Dharampal",
                 role: "First-time Buyer",
                 content: "The team guided me through every step. From search to closing, the experience was seamless and professional.",
                 rating: 5
