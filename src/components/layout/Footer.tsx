@@ -94,13 +94,13 @@ const Footer = () => {
                 <div className="p-2 bg-secondary/20 rounded-lg group-hover:bg-secondary/30 transition-colors">
                   <MapPin className="h-4 w-4 flex-shrink-0" />
                 </div>
-                <span>123 Luxury Estate Ave<br />New York, NY 10001</span>
+                <span>B Boys Hostel, IET-DAVV<br />Indore</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors group">
                 <div className="p-2 bg-secondary/20 rounded-lg group-hover:bg-secondary/30 transition-colors">
                   <Phone className="h-4 w-4 flex-shrink-0" />
                 </div>
-                <span>(555) 123-4567</span>
+                <span>+91 9009975543</span>
               </li>
               <li className="flex items-center gap-3 text-sm text-primary-foreground/80 hover:text-primary-foreground transition-colors group">
                 <div className="p-2 bg-secondary/20 rounded-lg group-hover:bg-secondary/30 transition-colors">
