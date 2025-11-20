@@ -5,7 +5,7 @@ import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { Home, Target, Users, Award } from 'lucide-react';
 import aniketImage from '@/assets/aniket-agrawal.jpg';
 import parasImage from '@/assets/paras-paterya.jpg';
-import amitImage from '@/assets/amit-shivhare.jpg';
+import amitImage from '@/assets/amit-new.jpg';
 
 const About = () => {
   return (
@@ -145,7 +145,7 @@ const About = () => {
                 <Card className="text-center hover:shadow-lg transition-shadow">
                   <CardContent className="pt-8 pb-8">
                     <Avatar className="w-32 h-32 mx-auto mb-4">
-                      <AvatarImage src={amitImage} alt="Paras Mani Paterya" className="object-cover" />
+                      <AvatarImage src={parasImage} alt="Paras Mani Paterya" className="object-cover" />
                       <AvatarFallback>PP</AvatarFallback>
                     </Avatar>
                     <h3 className="text-xl font-semibold mb-1">Paras Mani Paterya</h3>
@@ -157,7 +157,7 @@ const About = () => {
                 <Card className="text-center hover:shadow-lg transition-shadow">
                   <CardContent className="pt-8 pb-8">
                     <Avatar className="w-32 h-32 mx-auto mb-4">
-                      <AvatarImage src={parasImage} alt="Amit Kumar Shivhare" className="object-cover" />
+                      <AvatarImage src={amitImage} alt="Amit Kumar Shivhare" className="object-cover" />
                       <AvatarFallback>AS</AvatarFallback>
                     </Avatar>
                     <h3 className="text-xl font-semibold mb-1">Amit Kumar Shivhare</h3>
