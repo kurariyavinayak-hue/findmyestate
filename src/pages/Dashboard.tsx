@@ -143,8 +143,10 @@ const Dashboard = () => {
                           </Link>
                         </Button>
                         <Button variant="outline" size="sm">
-                          <Edit className="mr-2 h-4 w-4" />
-                          Edit
+                          <Link to={`/edit-property/${property.id}`}>
+                            <Edit className="mr-2 h-4 w-4" />
+                            Edit
+                          </Link>
                         </Button>
                         <Button variant="outline" size="sm">
                           <TrendingUp className="mr-2 h-4 w-4" />

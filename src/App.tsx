@@ -33,6 +33,7 @@ const App = () => (
             <Route path="/properties/:id" element={<PropertyDetails />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/add-property" element={<AddProperty />} />
+            <Route path="/edit-property/:id" element={<AddProperty />} />
             <Route path="/admin" element={<AdminDashboard />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />

@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { ArrowLeft, Upload, X } from 'lucide-react';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
@@ -16,6 +16,8 @@ import { supabase } from '@/integrations/supabase/client';
 const AddProperty = () => {
   const { isAuthenticated, user } = useAuth();
   const navigate = useNavigate();
+  const { id } = useParams();
+  const isEditMode = !!id;
   const [isLoading, setIsLoading] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
@@ -29,6 +31,55 @@ const AddProperty = () => {
       navigate('/auth?mode=login');
     }
   }, [isAuthenticated, navigate]);
+
+  // Load property data when in edit mode
+  useEffect(() => {
+    const loadPropertyData = async () => {
+      if (!isEditMode || !id) return;
+
+      setIsLoading(true);
+      const { data, error } = await supabase
+        .from('properties')
+        .select('*')
+        .eq('id', id)
+        .single();
+
+      if (error) {
+        toast.error('Failed to load property data');
+        navigate('/dashboard');
+        return;
+      }
+
+      if (data.seller_id !== user?.id) {
+        toast.error('You can only edit your own properties');
+        navigate('/dashboard');
+        return;
+      }
+
+      setFormData({
+        title: data.title,
+        price: data.price.toString(),
+        type: data.property_type,
+        bedrooms: data.bedrooms.toString(),
+        bathrooms: data.bathrooms.toString(),
+        area: data.area.toString(),
+        address: data.address,
+        city: data.city,
+        state: data.state,
+        zipCode: data.zip_code,
+        description: data.description,
+        phone: '',
+      });
+
+      if (data.images && data.images.length > 0) {
+        setImagePreviews(data.images);
+      }
+
+      setIsLoading(false);
+    };
+
+    loadPropertyData();
+  }, [isEditMode, id, user, navigate]);
 
   const [formData, setFormData] = useState({
     title: '',
@@ -185,8 +236,8 @@ const AddProperty = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Validate tax receipt is uploaded
-    if (!taxReceiptFile) {
+    // Validate tax receipt is uploaded (only required for new properties)
+    if (!isEditMode && !taxReceiptFile) {
       toast.error('Please upload a tax receipt to proceed');
       return;
     }
@@ -194,39 +245,61 @@ const AddProperty = () => {
     setIsLoading(true);
 
     try {
-      // Upload images first
-      const imageUrls = await uploadImages();
+      let imageUrls = imagePreviews;
+      let taxReceiptUrl = null;
+
+      // Upload new images if any
+      if (imageFiles.length > 0) {
+        const uploadedImageUrls = await uploadImages();
+        imageUrls = isEditMode ? [...imagePreviews, ...uploadedImageUrls] : uploadedImageUrls;
+      }
       
-      // Upload tax receipt
-      const taxReceiptUrl = await uploadTaxReceipt();
+      // Upload tax receipt if provided
+      if (taxReceiptFile) {
+        taxReceiptUrl = await uploadTaxReceipt();
+      }
 
-      // Insert property into database
-      const { error } = await supabase
-        .from('properties')
-        .insert({
-          seller_id: user?.id,
-          title: formData.title,
-          price: parseInt(formData.price),
-          property_type: formData.type,
-          bedrooms: parseInt(formData.bedrooms),
-          bathrooms: parseInt(formData.bathrooms),
-          area: parseInt(formData.area),
-          address: formData.address,
-          city: formData.city,
-          state: formData.state,
-          zip_code: formData.zipCode,
-          description: formData.description,
-          images: imageUrls,
-          tax_receipt_url: taxReceiptUrl,
-        });
+      const propertyData = {
+        seller_id: user?.id,
+        title: formData.title,
+        price: parseInt(formData.price),
+        property_type: formData.type,
+        bedrooms: parseInt(formData.bedrooms),
+        bathrooms: parseInt(formData.bathrooms),
+        area: parseInt(formData.area),
+        address: formData.address,
+        city: formData.city,
+        state: formData.state,
+        zip_code: formData.zipCode,
+        description: formData.description,
+        images: imageUrls,
+        ...(taxReceiptUrl && { tax_receipt_url: taxReceiptUrl }),
+        ...(isEditMode && { status: 'pending' }), // Reset status to pending on edit
+      };
 
-      if (error) throw error;
+      if (isEditMode) {
+        // Update existing property
+        const { error } = await supabase
+          .from('properties')
+          .update(propertyData)
+          .eq('id', id);
 
-      toast.success('Property listed successfully!');
+        if (error) throw error;
+        toast.success('Property updated successfully!');
+      } else {
+        // Insert new property
+        const { error } = await supabase
+          .from('properties')
+          .insert(propertyData);
+
+        if (error) throw error;
+        toast.success('Property listed successfully!');
+      }
+
       navigate('/dashboard');
     } catch (error) {
-      console.error('Error listing property:', error);
-      toast.error('Failed to list property. Please try again.');
+      console.error('Error saving property:', error);
+      toast.error(`Failed to ${isEditMode ? 'update' : 'list'} property. Please try again.`);
     } finally {
       setIsLoading(false);
     }
@@ -249,9 +322,9 @@ const AddProperty = () => {
 
           <Card>
             <CardHeader>
-              <CardTitle className="text-3xl">List Your Property</CardTitle>
+              <CardTitle className="text-3xl">{isEditMode ? 'Edit Property' : 'List Your Property'}</CardTitle>
               <CardDescription>
-                Fill in the details below to list your property for sale
+                {isEditMode ? 'Update your property details' : 'Fill in the details below to list your property for sale'}
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -532,7 +605,7 @@ const AddProperty = () => {
 
                 <div className="flex gap-4 pt-4">
                   <Button type="submit" size="lg" className="flex-1" disabled={isLoading}>
-                    {isLoading ? 'Publishing...' : 'Publish Property'}
+                    {isLoading ? (isEditMode ? 'Updating...' : 'Publishing...') : (isEditMode ? 'Update Property' : 'Publish Property')}
                   </Button>
                   <Button
                     type="button"
