@@ -242,7 +242,7 @@ const AdminDashboard = () => {
                     <TableRow key={property.id}>
                       <TableCell className="font-medium">
                         <button
-                          onClick={() => navigate(`/property/${property.id}`)}
+                          onClick={() => navigate(`/properties/${property.id}`)}
                           className="text-primary hover:underline cursor-pointer text-left"
                         >
                           {property.title}
