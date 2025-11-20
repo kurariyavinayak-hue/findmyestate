@@ -12,6 +12,7 @@ import PropertyDetails from "./pages/PropertyDetails";
 import Dashboard from "./pages/Dashboard";
 import AddProperty from "./pages/AddProperty";
 import AdminDashboard from "./pages/AdminDashboard";
+import Favorites from "./pages/Favorites";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import NotFound from "./pages/NotFound";
@@ -35,6 +36,7 @@ const App = () => (
             <Route path="/add-property" element={<AddProperty />} />
             <Route path="/edit-property/:id" element={<AddProperty />} />
             <Route path="/admin" element={<AdminDashboard />} />
+            <Route path="/favorites" element={<Favorites />} />
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}

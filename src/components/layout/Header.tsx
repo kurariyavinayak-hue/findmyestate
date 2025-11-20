@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { Home, LogIn, UserPlus, User, LogOut, PlusCircle, Shield } from 'lucide-react';
+import { Home, LogIn, UserPlus, User, LogOut, PlusCircle, Shield, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/ui/theme-toggle';
 import {
@@ -92,6 +92,12 @@ const Header = () => {
                     <Link to="/dashboard" className="cursor-pointer">
                       <User className="mr-2 h-4 w-4" />
                       Dashboard
+                    </Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem asChild>
+                    <Link to="/favorites" className="cursor-pointer">
+                      <Heart className="mr-2 h-4 w-4" />
+                      Favorites
                     </Link>
                   </DropdownMenuItem>
                   {isAdmin && (
